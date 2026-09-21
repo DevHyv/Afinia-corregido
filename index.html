@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Afinador y Transpositor</title>
+  <title>AFINIA y Transpositor</title>
   <meta name="theme-color" content="#1a1a1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -89,7 +89,7 @@
       user-select: none;
     }
 
-    /* Botón oculto para el título "Afinador" (estilo rosa) */
+    /* Botón oculto para el título "AFINIA" (estilo rosa) */
     .donate-title-btn {
       background: transparent;
       border: none;
@@ -295,10 +295,10 @@
       transition: width 0.05s;
     }
 
-    /* Cuerdas en hilera hacia abajo */
+    /* Cuerdas en DOS hileras de 3: E A D / G B E (guitarra) */
     .strings-grid {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 0.5rem;
       margin-top: 1rem;
     }
@@ -429,7 +429,6 @@
       .grid-2 {
         grid-template-columns: 1fr;
       }
-      /* Se eliminó el override de .strings-grid para mantener la hilera vertical */
       .note-name {
         font-size: 2.8rem;
       }
@@ -452,13 +451,13 @@
 <body>
   <div class="app-card">
     <div class="tab-navigation">
-      <button class="tab-btn active" onclick="switchTab('tunerTab', this)">Afinador</button>
+      <button class="tab-btn active" onclick="switchTab('tunerTab', this)">AFINIA</button>
       <button class="tab-btn" onclick="switchTab('transposeTab', this)">Transpositor</button>
     </div>
 
     <div id="tunerTab" class="tab-content active">
       <div class="tuner-header">
-        <button class="donate-title-btn" id="donateTitleBtn">Afinador</button>
+        <button class="donate-title-btn" id="donateTitleBtn">AFINIA</button>
         <div class="instrument-selector">
           <select id="instrumentSelect">
             <option value="guitar">Guitarra (6 cuerdas)</option>
@@ -910,13 +909,11 @@
             microphone = audioContext.createMediaStreamSource(stream);
 
             // ---- Supresor de ruido: cadena de filtros para aislar instrumentos ----
-            // Highpass: elimina retumbe/ruido de baja frecuencia (bajo E1 = 41.2 Hz)
             const highpass = audioContext.createBiquadFilter();
             highpass.type = 'highpass';
             highpass.frequency.value = 35;
             highpass.Q.value = 0.7;
 
-            // Lowpass: elimina voces y ruido agudo (armónicos útiles hasta ~2 kHz)
             const lowpass = audioContext.createBiquadFilter();
             lowpass.type = 'lowpass';
             lowpass.frequency.value = 2000;
